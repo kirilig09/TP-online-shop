@@ -1,0 +1,24 @@
+<title>Post</title>
+<a href="/">Home</a>
+
+<h1>{{ post.name }}</h1>
+<h2>{{ post.author }}</h2>
+
+<hr>
+<p>
+Content: {{ post.content }}
+</br>
+Price: {{ post.price }}
+</br>
+Date: {{ post.datestamp }}
+</br>
+</p>
+
+<a href="/posts/{{ post.id }}/edit">Edit post</a><br/><br/>
+<form action="/posts/{{ post.id }}/delete" method="post">
+  <button type="submit">Delete post</button>
+</form>
+<br/>
+
+  <br/>
+</div>

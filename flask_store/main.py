@@ -1,0 +1,118 @@
+from functools import wraps
+from datetime import date
+
+from flask import Flask
+from flask import render_template, request, redirect, url_for, jsonify
+import json
+
+from post import Post
+from user import User
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return redirect("/posts")
+
+
+def require_login(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        token = request.cookies.get('token')
+        if not token or not User.verify_token(token):
+            return redirect('/login')
+        return func(*args, **kwargs)
+    return wrapper
+
+@app.route('/posts')
+def list_posts():
+    return render_template('posts.html', posts=Post.all())
+
+
+@app.route('/posts/<int:id>')
+def show_post(id):
+    post = Post.find(id)
+
+    return render_template('post.html', post=post)
+
+
+@app.route('/posts/<int:id>/edit', methods=['GET', 'POST'])
+def edit_post(id):
+    post = Post.find(id)
+    if request.method == 'GET':
+        return render_template(
+            'edit_post.html',
+            post=post
+        )
+    elif request.method == 'POST':
+        post.name = request.form['name']
+        post.author = request.form['author']
+        post.content = request.form['content']
+        post.price = request.form['price']
+        post.save()
+        return redirect(url_for('show_post', id=post.id))
+
+@app.route('/posts/new', methods=['GET', 'POST'])
+@require_login
+def new_post():
+    if request.method == 'GET':
+        return render_template('new_post.html')
+    elif request.method == 'POST':
+        values = (
+            None,
+            request.form['name'],
+            request.form['author'],
+            request.form['content'],
+            request.form['price'],
+            date.today(),
+            1,
+            ""      
+        )
+        Post(*values).create()
+
+        return redirect('/')
+
+
+@app.route('/posts/<int:id>/delete', methods=['POST'])
+def delete_post(id):
+    post = Post.find(id)
+    post.delete()
+
+    return redirect('/')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    elif request.method == 'POST':
+        values = (
+            None,
+            request.form['username'],
+            User.hash_password(request.form['password']),
+            request.form['email'],
+            request.form['address'],
+            request.form['phone']
+
+        )
+        User(*values).create()
+
+        return redirect('/')
+
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        data = json.loads(request.data.decode('ascii'))
+        username = data['username']
+        password = data['password']
+        user = User.find_by_username(username)
+        if not user or not user.verify_password(password):
+            return jsonify({'token': None})
+        token = user.generate_token()
+        return jsonify({'token': token.decode('ascii')})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
