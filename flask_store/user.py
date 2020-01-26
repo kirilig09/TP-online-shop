@@ -40,7 +40,6 @@ class User:
             if row:
                 return User(*row)
 
-
     @staticmethod
     def hash_password(password):
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
@@ -63,6 +62,41 @@ class User:
         except BadSignature:
             return False
         return True
+
+    def save(self):
+        with DB() as db:
+            values = (
+                self.username,
+                self.password,
+                self.email,
+                self.address,
+                self.phone,
+                self.id
+            )
+            db.execute(
+                '''UPDATE users
+                SET username = ?, password = ?, email = ?, address = ?, phone = ?
+                WHERE id = ?''', values)
+            return self        
+
+    def delete(self):
+        with DB() as db:
+            db.execute('DELETE FROM users WHERE id = ?', (self.id,))
+
+    @staticmethod
+    def all():
+        with DB() as db:
+            rows = db.execute('SELECT * FROM users').fetchall()
+            return [User(*row) for row in rows] 
+
+    @staticmethod
+    def find(id):
+        with DB() as db:
+            row = db.execute(
+                'SELECT * FROM users WHERE id = ?',
+                (id,)
+            ).fetchone()
+            return User(*row)
 
 
 

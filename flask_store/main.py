@@ -113,6 +113,36 @@ def login():
         token = user.generate_token()
         return jsonify({'token': token.decode('ascii')})
 
+@app.route('/users')
+def list_users():
+    return render_template('users.html', users=User.all())
+
+@app.route('/users/<int:id>')
+def show_user(id):
+    user = User.find(id)
+
+    return render_template('user.html', user=user)    
+
+@app.route('/users/<int:id>/delete', methods=['POST'])
+def delete_user(id):
+    user = User.find(id)
+    user.delete() 
+
+@app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+def edit_user(id):
+    user = User.find(id)
+    if request.method == 'GET':
+        return render_template(
+            'edit_user.html',
+            user=user
+        )
+    elif request.method == 'POST':
+        user.username = request.form['username']
+        user.address = request.form['address']
+        user.phone = request.form['phone']
+        user.save()
+        return redirect(url_for('show_user', id=user.id))               
+
 
 if __name__ == '__main__':
     app.run(debug=True)
