@@ -12,7 +12,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return redirect("/posts")
+    return redirect('/main')
+
+@app.route('/main')
+def route_main():
+    return render_template('main.html')
 
 
 def require_login(func):
@@ -127,6 +131,8 @@ def show_user(id):
 def delete_user(id):
     user = User.find(id)
     user.delete() 
+
+    return redirect('/')
 
 @app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def edit_user(id):
