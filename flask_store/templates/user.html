@@ -11,13 +11,15 @@ Address: {{ user.address }}
 </br>
 Phone: {{ user.phone }}
 </br>
+{% if user.bought != "" %}
+Bought:	{{user.bought}}
+{% endif %}
+</br>
 </p>
 
 <a href="/users/{{ user.id }}/edit">Edit user</a><br/><br/>
 <form action="/users/{{ user.id }}/delete" method="post">
   <button type="submit">Delete user</button>
 </form>
-<br/>
-
-  <br/>
+</br>
 </div>

@@ -11,20 +11,21 @@ from itsdangerous import (
 SECRET_KEY = 'ncXZyx5cLR7x1$B^Ybtqp1f!E#dG4H3EN@ioYYKoxx'
 
 class User:
-    def __init__(self, id, username, password, email, address, phone):
+    def __init__(self, id, username, password, email, address, phone, bought):
         self.id = id
         self.username = username
         self.password = password
         self.email = email
         self.address = address
         self.phone = phone
+        self.bought = bought
 
     def create(self):
         with DB() as db:
-            values = (self.username, self.password, self.email, self.address, self.phone)
+            values = (self.username, self.password, self.email, self.address, self.phone, self.bought)
             db.execute('''
-                INSERT INTO users (username, password, email, address, phone)
-                VALUES (?, ?, ?, ?, ?)''', values)
+                INSERT INTO users (username, password, email, address, phone, bought)
+                VALUES (?, ?, ?, ?, ?, ?)''', values)
             return self
 
 
@@ -71,11 +72,12 @@ class User:
                 self.email,
                 self.address,
                 self.phone,
+                self.bought,
                 self.id
             )
             db.execute(
                 '''UPDATE users
-                SET username = ?, password = ?, email = ?, address = ?, phone = ?
+                SET username = ?, password = ?, email = ?, address = ?, phone = ?, bought = ?
                 WHERE id = ?''', values)
             return self        
 

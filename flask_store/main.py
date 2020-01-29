@@ -104,7 +104,8 @@ def register():
             User.hash_password(request.form['password']),
             request.form['email'],
             request.form['address'],
-            request.form['phone']
+            request.form['phone'],
+            ""
         )
         User(*values).create()
         global logged_username
@@ -140,8 +141,10 @@ def show_user(id):
 @app.route('/users/<int:id>/delete', methods=['POST'])
 def delete_user(id):
     user = User.find(id)
+    global logged_username
+    if(user.username == logged_username):
+        logged_username = ""
     user.delete() 
-
     return redirect('/')
 
 @app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
@@ -162,8 +165,12 @@ def edit_user(id):
 @app.route('/posts/<int:id>/buy', methods=['POST'])
 def buy_post(id):
     post = Post.find(id)
+    user = User.find_by_username(logged_username)
+    user.bought += post.name
+    user.bought += '\n'
     post.buyer = logged_username
     post.active = 0
+    user.save()
     post.save()
 
     return redirect(url_for('show_post', id=post.id))                     

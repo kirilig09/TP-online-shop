@@ -12,13 +12,18 @@ Price: {{ post.price }}
 Date: {{ post.datestamp }}
 </br>
 </p>
+
 {% if post.poster == logged_username %}
 <a href="/posts/{{ post.id }}/edit">Edit post</a><br/><br/>
 {% endif %}  
-{% if post.active %}
+
+{% if post.poster != logged_username and post.active %}
 <form action="/posts/{{ post.id }}/buy" method="post">
   <button type="submit">Buy</button>
-{% else %}
+</form>
+{% endif %}
+
+{% if post.active == 0 %}
 	Sold to {{post.buyer}}
 {% endif %}
 
