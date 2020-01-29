@@ -47,33 +47,11 @@ class Post:
                 self.buyer,
                 self.id
             )
-            print(self.name)
-            print(self.author)
-            print(self.content)
-            print(self.price)
-            print(self.datestamp)
-            print(self.active)
-            print(self.buyer)
-            print(self.id)
             db.execute(
                 '''UPDATE posts
                 SET name = ?, author = ?, content = ?, price = ?, datestamp = ?, active = ?, buyer = ?
                 WHERE id = ?''', values)
             return self
-
-    # def buy(self, buyer):
-    #     with DB() as db:
-    #         values = (
-    #             0,
-    #             buyer,
-    #             self.id
-    #         )
-    #         print("TEST TEST TEST TEST")
-    #         db.execute(
-    #             '''UPDATE posts
-    #             SET active = ?, buyer = ?
-    #             WHERE id = ?''', values)
-    #         return self
 
     def delete(self):
         with DB() as db:
