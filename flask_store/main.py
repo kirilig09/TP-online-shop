@@ -2,7 +2,7 @@ from functools import wraps
 from datetime import date
 
 from flask import Flask
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import render_template, request, redirect, url_for, jsonify, flash
 import json
 
 from post import Post
@@ -40,7 +40,7 @@ def list_posts():
 def show_post(id):
     post = Post.find(id)
 
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, logged_username = logged_username)
 
 
 @app.route('/posts/<int:id>/edit', methods=['GET', 'POST'])
@@ -73,7 +73,8 @@ def new_post():
             request.form['price'],
             date.today(),
             1,
-            ""      
+            "",
+            logged_username
         )
         Post(*values).create()
 
@@ -83,9 +84,14 @@ def new_post():
 @app.route('/posts/<int:id>/delete', methods=['POST'])
 def delete_post(id):
     post = Post.find(id)
-    post.delete()
-
-    return redirect('/')
+    if(post.poster == logged_username):
+        post.delete()
+        return redirect('/posts')
+    else:
+        print("test")
+        #flash("You are not the poster")
+        return redirect(url_for('show_post', id=post.id))                     
+     
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -160,7 +166,7 @@ def buy_post(id):
     post.active = 0
     post.save()
 
-        return redirect(url_for('show_post', id=post.id))                     
+    return redirect(url_for('show_post', id=post.id))                     
 
 if __name__ == '__main__':
     app.run(debug=True)

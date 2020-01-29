@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS posts
         price REAL,
         datestamp TEXT,
         active INT,
-        buyer TEXT
+        buyer TEXT,
+        poster TEXT
     )
 ''')
 

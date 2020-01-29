@@ -1,4 +1,4 @@
-<title>Post</title>
+<title>Post {{post.id}} </title>
 <a href="/">Home</a>
 
 <h1>Name: {{ post.name }}</h1>
@@ -12,16 +12,20 @@ Price: {{ post.price }}
 Date: {{ post.datestamp }}
 </br>
 </p>
+{% if post.poster == logged_username %}
 <a href="/posts/{{ post.id }}/edit">Edit post</a><br/><br/>
+{% endif %}  
 {% if post.active %}
 <form action="/posts/{{ post.id }}/buy" method="post">
   <button type="submit">Buy</button>
 {% else %}
 	Sold to {{post.buyer}}
-{% endif %}	
-</form>
+{% endif %}
+
+{% if post.poster == logged_username %}
 <form action="/posts/{{ post.id }}/delete" method="post">
   <button type="submit">Delete post</button>
+{% endif %}  
 </form>
 <br/>
 

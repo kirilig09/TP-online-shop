@@ -2,15 +2,16 @@ from database import DB
 from datetime import date
 
 class Post:
-    def __init__(self, id, name, author, content, price, datestamp, active, buyer):
+    def __init__(self, id, name, author, content, price, datestamp, active, buyer, poster):
         self.id = id
         self.name = name
         self.author = author
         self.content = content
         self.price = price
-        self.datestamp = date.today()
+        self.datestamp = datestamp
         self.active = active
         self.buyer = buyer
+        self.poster = poster
 
     @staticmethod
     def all():
@@ -29,10 +30,10 @@ class Post:
 
     def create(self):
         with DB() as db:
-            values = (self.name, self.author, self.content, self.price)
+            values = (self.name, self.author, self.content, self.price, self.datestamp, self.active, self.buyer, self.poster)
             db.execute('''
-                INSERT INTO posts (name, author, content, price)
-                VALUES (?, ?, ?, ?)''', values)
+                INSERT INTO posts (name, author, content, price, datestamp, active, buyer, poster)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', values)
             return self
 
     def save(self):
@@ -45,11 +46,12 @@ class Post:
                 self.datestamp,
                 self.active,
                 self.buyer,
+                self.poster,
                 self.id
             )
             db.execute(
                 '''UPDATE posts
-                SET name = ?, author = ?, content = ?, price = ?, datestamp = ?, active = ?, buyer = ?
+                SET name = ?, author = ?, content = ?, price = ?, datestamp = ?, active = ?, buyer = ?, poster = ?
                 WHERE id = ?''', values)
             return self
 
