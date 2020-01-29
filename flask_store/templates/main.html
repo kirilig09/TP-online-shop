@@ -1,5 +1,11 @@
 <title>Main Page</title>
 
+{%if username != "" %}
+<h3> Logged in as: {{username}} </h3>
+{% else %}
+<h3> Not Logged in </h3>
+{% endif %}
+ 
 <a href="/login">Login</a>
 <br/>
 <a href="/register">Register</a>

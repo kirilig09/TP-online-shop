@@ -1,9 +1,8 @@
 <title>Post</title>
 <a href="/">Home</a>
 
-<h1>{{ post.name }}</h1>
-<h2>{{ post.author }}</h2>
-
+<h1>Name: {{ post.name }}</h1>
+<h2>Author: {{ post.author }}</h2>
 <hr>
 <p>
 Content: {{ post.content }}
@@ -13,8 +12,14 @@ Price: {{ post.price }}
 Date: {{ post.datestamp }}
 </br>
 </p>
-
 <a href="/posts/{{ post.id }}/edit">Edit post</a><br/><br/>
+{% if post.active %}
+<form action="/posts/{{ post.id }}/buy" method="post">
+  <button type="submit">Buy</button>
+{% else %}
+	Sold to {{post.buyer}}
+{% endif %}	
+</form>
 <form action="/posts/{{ post.id }}/delete" method="post">
   <button type="submit">Delete post</button>
 </form>

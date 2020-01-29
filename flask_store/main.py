@@ -10,13 +10,16 @@ from user import User
 
 app = Flask(__name__)
 
+global logged_username #stores the name of the user who is logged in
+logged_username = ""
+
 @app.route('/')
 def hello_world():
     return redirect('/main')
 
 @app.route('/main')
 def route_main():
-    return render_template('main.html')
+    return render_template('main.html', username = logged_username)
 
 
 def require_login(func):
@@ -96,12 +99,11 @@ def register():
             request.form['email'],
             request.form['address'],
             request.form['phone']
-
         )
         User(*values).create()
-
+        global logged_username
+        logged_username = request.form['username']
         return redirect('/')
-
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -111,6 +113,8 @@ def login():
         data = json.loads(request.data.decode('ascii'))
         username = data['username']
         password = data['password']
+        global logged_username
+        logged_username = username
         user = User.find_by_username(username)
         if not user or not user.verify_password(password):
             return jsonify({'token': None})
@@ -147,8 +151,16 @@ def edit_user(id):
         user.address = request.form['address']
         user.phone = request.form['phone']
         user.save()
-        return redirect(url_for('show_user', id=user.id))               
+        return redirect(url_for('show_user', id=user.id)) 
 
+@app.route('/posts/<int:id>/buy', methods=['POST'])
+def buy_post(id):
+    post = Post.find(id)
+    post.buyer = logged_username
+    post.active = 0
+    post.save()
+
+        return redirect(url_for('show_post', id=post.id))                     
 
 if __name__ == '__main__':
     app.run(debug=True)
