@@ -1,7 +1,27 @@
-<title>Post {{post.id}} </title>
-<a href="/">Home</a>
+<style>
+#home {
+	position: relative;
+	font-size: 17px;
+	text-decoration: none;
+	color: black;
+	border-style: ridge;
+	border-radius: 4px;
+	padding: 2px;
+}
 
-<h1>Name: {{ post.name }}</h1>
+#name {
+	position: relative;
+	border-bottom-style: solid;
+	border-color: DodgerBlue;
+	padding: 7px;
+	background-color: rgb(165, 250, 255);
+}
+</style>
+
+<title>Post {{post.id}} </title>
+<a href="/" id="home">Home</a>
+
+<h1 id="name">Name: {{ post.name }}</h1>
 <h2>Author: {{ post.author }}</h2>
 <hr>
 <p>

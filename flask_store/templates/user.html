@@ -1,8 +1,44 @@
+<style>
+#home {
+	font-size: 15px;
+	color: black;
+	border-style: ridge;
+	border-radius: 4px;
+	padding: 2.5px;
+}
+
+.user {
+	position: relative;
+	border-bottom-style: solid;
+	border-color: DodgerBlue;
+	padding: 7px;
+	background-color: rgb(165, 250, 255);
+}
+
+h {
+	border-bottom-style: ridge;
+	
+}
+
+#edit {
+	font-size: 15px;
+	color: black;
+	border-style: ridge;
+	border-radius: 4px;
+	padding: 2.5px;
+}
+
+#button {
+	color: white;
+	background-color: red;
+}
+</style>
+
 <title>User {{user.id}} </title>
 
-<a href="/">Home</a>
+<a href="/" id="home">Home</a>
 
-<h1>{{ user.username }}</h1>
+<h1 class="user">{{ user.username }}</h1>
 <h2>{{ user.email }}</h2>
 
 <hr>
@@ -17,9 +53,9 @@ Bought:	{{user.bought}}
 </br>
 </p>
 
-<a href="/users/{{ user.id }}/edit">Edit user</a><br/><br/>
+<a href="/users/{{ user.id }}/edit" id="edit">Edit user</a><br/><br/>
 <form action="/users/{{ user.id }}/delete" method="post">
-  <button type="submit">Delete user</button>
+  <button type="submit" id="button">Delete user</button>
 </form>
 </br>
 </div>

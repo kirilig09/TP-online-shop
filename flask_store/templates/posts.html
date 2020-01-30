@@ -1,14 +1,46 @@
+<style>
+h1 {
+	position: relative;
+	left: -3px;
+	font-size: 30px;
+	border-left-style: solid;
+	border-color: DodgerBlue;
+	padding: 10px;
+	margin: 15px;
+	background-color: rgb(165, 250, 255);
+}
+
+.else {
+	position: relative;
+	font-size: 17px;
+	text-decoration: none;
+	color: black;
+	border-style: ridge;
+	border-radius: 4px;
+	padding: 2px;
+}
+
+.posts {
+	color: black;
+	font-size: 20px;
+	padding: 2px;
+	margin: 10px;
+	border-left-style: ridge;
+	border-width: 2px;
+}
+</style>
+
+<body>
 <title>Posts</title>
 
-<a href="/posts/new">New post</a>
-<br/>
-<a href="/login">Login</a>
-<br/>
-<a href="/register">Register</a>
+<a href="/posts/new" class="else">New post</a>
+<a href="/login" class="else">Login</a>
+<a href="/register" class="else">Register</a>
 
 <h1>Posts</h1>
+<hr>
 {% for post in posts %}
-<a href="/posts/{{ post.id }}"><b>Name:</b> {{ post.name }} | Author: {{ post.author }}</a>
+<a href="/posts/{{ post.id }}" class="posts"><b>Name:</b> {{ post.name }} | Author: {{ post.author }}</a>
 <br/>
 {% endfor %}
-
+</body>

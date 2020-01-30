@@ -1,3 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+	background-image: url("https://avatanplus.com/files/resources/original/59dcf4dd8558115f071c816a.png");
+	background-repeat: no-repeat;
+}
+
+h3 {
+	position: relative;
+	left: 3px;
+	font-size: 30px;
+	border-left-style: solid;
+	border-color: DodgerBlue;
+	padding: 10px;
+	margin: 5px;
+	background-color: rgb(165, 250, 255);
+}
+
+a {
+	position: relative;
+	font-size: 20px;
+}
+
+.login_info {
+	text-decoration: none;
+	top: 10px;
+	color: black;
+	border-style: ridge;
+	border-radius: 4px;
+	padding: 2.5px;
+	margin: 15px;
+}
+
+#register {
+	top: -14px;
+	right: 50px;
+	left: 74px;
+	bottom: 20px;
+}
+
+#post {
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	top: 22px;
+	left: 10px;
+	padding: 6px;
+	border-style: dashed;
+	border-color: white;
+	border-width: 1px;
+	border-radius: 8px;
+	background-color: DodgerBlue;
+}
+
+.list {
+	color: black;
+	text-decoration: none;
+	left: 10px;
+	top: 70px;
+	border-bottom-style: ridge;
+	border-color: DodgerBlue;
+	border-width: 3px;
+}
+
+#posts_list {
+	top: 49px;
+}
+</style>
+</head>
+
+<body>
 <title>Main Page</title>
 
 {%if username != "" %}
@@ -5,13 +78,15 @@
 {% else %}
 <h3> Not Logged in </h3>
 {% endif %}
- 
-<a href="/login">Login</a>
+<hr>
+<a href="/login" class="login_info">Login</a>
 <br/>
-<a href="/register">Register</a>
+<a href="/register" class="login_info" id="register">Register</a>
 <br/>
-<a href="/posts/new">New post</a>
+<a href="/posts/new" id="post">New post</a>
 <br/>
-<a href="/posts">Posts</a>
+<a href="/posts" class="list" id="posts_list">Posts</a>
 <br/>
-<a href="/users">List of users</a>
+<a href="/users" class="list">List of users</a>
+</body>
+</html>
